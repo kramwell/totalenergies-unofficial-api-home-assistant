@@ -1,0 +1,84 @@
+#Total Energies Luz Tariff - https://github.com/KramWell/totalenergies-unofficial-api-home-assistant
+sensor:
+  - platform: rest
+    name: TotalEnergies Luz Tariff Sin Taxes
+    json_attributes:
+      - power_kw_day_sin_taxes_under_10kw
+      - consumption_kw_hour_sin_taxes_under_10kw
+      - power_kw_day_sin_taxes_over_10kw
+      - consumption_kw_hour_sin_taxes_over_10kw
+      - luz_price_valid_from_date
+      - timeLastChecked
+      - error
+    resource: [PASTE HTTPS LINK TO PHP FILE 'totalenergies-unofficial-api.php']
+    value_template: "{{ value_json.error }}"
+    scan_interval: 86400 #check tariff once a day
+    
+  - platform: rest    
+    name: TotalEnergies Luz Tariff Con Taxes
+    json_attributes:
+      - power_kw_day_con_taxes_under_10kw
+      - consumption_kw_hour_con_taxes_under_10kw
+      - power_kw_day_con_taxes_over_10kw
+      - consumption_kw_hour_con_taxes_over_10kw
+      - luz_price_valid_from_date
+      - timeLastChecked
+      - error
+    resource: [PASTE HTTPS LINK TO PHP FILE 'totalenergies-unofficial-api.php']
+    value_template: "{{ value_json.error }}"
+    scan_interval: 86400 #check tariff once a day  
+    
+  - platform: template
+    sensors:
+    #SIN TAXES
+      totalenergies_power_kw_day_sin_taxes_under_10kw:
+        friendly_name: "TotalEnergies power kw day sin taxes under 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'power_kw_day_sin_taxes_under_10kw') }}"
+        unit_of_measurement: "EUR/kWd"
+      totalenergies_consumption_kw_hour_sin_taxes_under_10kw:
+        friendly_name: "TotalEnergies consumption kw hour sin taxes under 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'consumption_kw_hour_sin_taxes_under_10kw') }}"
+        unit_of_measurement: "EUR/kWh"
+      totalenergies_power_kw_day_sin_taxes_over_10kw:
+        friendly_name: "TotalEnergies power kw day sin taxes over 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'power_kw_day_sin_taxes_over_10kw') }}"
+        unit_of_measurement: "EUR/kWd"
+      totalenergies_consumption_kw_hour_sin_taxes_over_10kw:
+        friendly_name: "TotalEnergies consumption kw hour sin taxes over 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'consumption_kw_hour_sin_taxes_over_10kw') }}"
+        unit_of_measurement: "EUR/kWh"
+      totalenergies_luz_price_sin_taxes_valid_from_date:
+        friendly_name: "TotalEnergies tariff price last change date sin taxes"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'luz_price_valid_from_date') }}"
+      totalenergies_sin_timelastchecked:
+        friendly_name: "TotalEnergies time last requested sin taxes"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'timeLastChecked') }}"
+      totalenergies_sin_error:
+        friendly_name: "TotalEnergies error sin taxes"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_sin_taxes', 'error') }}"
+    # CON TAXES
+      totalenergies_power_kw_day_con_taxes_under_10kw:
+        friendly_name: "TotalEnergies power kw day con taxes under 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'power_kw_day_con_taxes_under_10kw') }}"
+        unit_of_measurement: "EUR/kWd"
+      totalenergies_consumption_kw_hour_con_taxes_under_10kw: # Most people will use this one with energy dashboard
+        friendly_name: "TotalEnergies consumption kw hour con taxes under 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'consumption_kw_hour_con_taxes_under_10kw') }}"
+        unit_of_measurement: "EUR/kWh"
+      totalenergies_power_kw_day_con_taxes_over_10kw:
+        friendly_name: "TotalEnergies power kw day con taxes over 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'power_kw_day_con_taxes_over_10kw') }}"
+        unit_of_measurement: "EUR/kWd"
+      totalenergies_consumption_kw_hour_con_taxes_over_10kw:
+        friendly_name: "TotalEnergies consumption kw hour con taxes over 10kw"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'consumption_kw_hour_con_taxes_over_10kw') }}"
+        unit_of_measurement: "EUR/kWh"
+      totalenergies_luz_price_con_taxes_valid_from_date:
+        friendly_name: "TotalEnergies tariff price last change date con taxes"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'luz_price_valid_from_date') }}"
+      totalenergies_con_taxes_timelastchecked:
+        friendly_name: "TotalEnergies time last requested con taxes"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'timeLastChecked') }}"
+      totalenergies_con_error:
+        friendly_name: "TotalEnergies Error con taxes"
+        value_template: "{{ state_attr('sensor.totalenergies_luz_tariff_con_taxes', 'error') }}"
